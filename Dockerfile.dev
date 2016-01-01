@@ -1,0 +1,9 @@
+FROM thefab/centos-opinionated:centos6
+MAINTAINER Fabien MARTY <fabien.marty@gmail.com>
+
+RUN yum -y install vsftpd
+
+# Add custom (other) files
+COPY root /
+
+ENTRYPOINT ["/init"]
