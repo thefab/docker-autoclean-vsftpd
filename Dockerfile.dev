@@ -9,7 +9,7 @@ ENV AUTOCLEANFTP_SYSLOG=1 \
     AUTOCLEANFTP_GIDS=500,500 \
     AUTOCLEANFTP_LIFETIMES=60,60
 
-RUN yum -y install vsftpd && rm -f /etc/vsftpd/vsftpd.conf
+RUN yum -y install vsftpd util-linux-ng passwd && rm -f /etc/vsftpd/vsftpd.conf
 
 # Add custom (other) files
 COPY root /
