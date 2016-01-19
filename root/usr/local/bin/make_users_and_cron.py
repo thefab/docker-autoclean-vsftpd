@@ -31,7 +31,7 @@ for i, user in enumerate(users):
     password = passwords[i]
     uid = uids[i]
     gid = gids[i]
-    lifetime = lifetimes[i]
+    lifetime = int(lifetimes[i])
     print("Creating user %s (%s, %s)..." % (user, uid, gid))
     command0 = '/usr/sbin/groupadd --force --gid=%s ftpusers' % (gid,)
     command1 = 'mkdir -p "/home/%s"' % user
@@ -43,3 +43,14 @@ for i, user in enumerate(users):
     os.system(command2)
     os.system(command3)
     os.system(command4)
+    if lifetime > 0:
+        if lifetime < 100:
+            when = "* * * * *"
+        elif lifetime < 500:
+            when = "*/5 * * * *"
+        elif lifetime < 14400:
+            when = "0 * * * *"
+        else:
+            when = "0 0 * * *"
+        with open("/etc/cron.d/autoclean_vsftpd", "w") as f:
+            f.write("%s find /home/%s -type f -mmin +%i -exec rm -Rvf {} \; 2>&1 |logger -t autoclean\n" % (when, user, lifetime))
