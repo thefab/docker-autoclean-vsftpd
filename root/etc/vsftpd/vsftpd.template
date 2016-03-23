@@ -121,6 +121,13 @@ tcp_wrappers=YES
 # no background execution (because of S6 init system)
 background=NO
 
+# passive configuration
+{% if AUTOCLEANFTP_PASV_ADDRESS != "FIXME" %}
+pasv_address={{AUTOCLEANFTP_PASV_ADDRESS}}
+{% endif %}
+pasv_min_port={{AUTOCLEANFTP_PASV_MIN_PORT}}
+pasv_max_port={{AUTOCLEANFTP_PASV_MAX_PORT}}
+
 {% if AUTOCLEANFTP_SYSLOG == "1" %}
 # syslog logging
 syslog_enable=YES
