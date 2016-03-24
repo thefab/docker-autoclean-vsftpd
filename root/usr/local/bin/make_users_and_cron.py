@@ -34,9 +34,11 @@ for i, user in enumerate(users):
     lifetime = int(lifetimes[i])
     print("Creating user %s (%s, %s)..." % (user, uid, gid))
     command0 = '/usr/sbin/groupadd --force --gid=%s ftpusers' % (gid,)
-    command1 = 'mkdir -p "/home/%s"' % user
-    command2 = '/usr/sbin/useradd --no-create-home --home-dir="/home/%s" --no-user-group --non-unique --gid=%s --shell=/sbin/nologin --uid=%s "%s"' % (user, gid, uid, user)
-    command3 = 'chown -R "%s:ftpusers" "/home/%s"' % (user, user)
+    command1 = 'mkdir -p "/data/%s"' % user
+    command2 = '/usr/sbin/useradd --no-create-home --home-dir="/data/%s"' \
+               '--no-user-group --non-unique --gid=%s --shell=/sbin/nologin ' \
+               '--uid=%s "%s"' % (user, gid, uid, user)
+    command3 = 'chown -R "%s:ftpusers" "/data/%s"' % (user, user)
     command4 = 'echo "%s" |passwd "%s" --stdin >/dev/null' % (password, user)
     os.system(command0)
     os.system(command1)
@@ -53,4 +55,5 @@ for i, user in enumerate(users):
         else:
             when = "0 0 * * *"
         with open("/etc/cron.d/autoclean_vsftpd", "w") as f:
-            f.write("%s find /home/%s -type f -mmin +%i -exec rm -Rvf {} \; 2>&1 |logger -t autoclean\n" % (when, user, lifetime))
+            f.write("%s find /data/%s -type f -mmin +%i -exec rm -Rvf {} \; "
+                    "2>&1 |logger -t autoclean\n" % (when, user, lifetime))

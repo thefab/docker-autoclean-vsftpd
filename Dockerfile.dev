@@ -17,5 +17,5 @@ RUN yum -y install vsftpd util-linux-ng passwd && rm -f /etc/vsftpd/vsftpd.conf
 # Add custom (other) files
 COPY root /
 
-VOLUME ["/home"]
+VOLUME ["/data"]
 EXPOSE 21 21100-21110
