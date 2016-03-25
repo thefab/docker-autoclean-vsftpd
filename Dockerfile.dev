@@ -12,9 +12,10 @@ ENV AUTOCLEANFTP_SYSLOG=1 \
     AUTOCLEANFTP_PASV_MAX_PORT=21110 \
     AUTOCLEANFTP_PASV_ADDRESS=FIXME
 
+# Install vsftp and some dependencies
 RUN yum -y install vsftpd util-linux-ng passwd && rm -f /etc/vsftpd/vsftpd.conf
 
-# Add custom (other) files
+# Add custom files
 COPY root /
 
 VOLUME ["/data"]
