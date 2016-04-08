@@ -5,5 +5,7 @@ services:
 
 script:
     - make build
-    - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - docker push thefab/autoclean-vsftpd
+
+deploy:
+    provider: script
+    script: make release
