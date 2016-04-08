@@ -7,6 +7,8 @@ def environnement_to_list(environnement_var, reference_size=None,
         reference_var='AUTOCLEANFTP_USERS'):
     res = [x.strip()
            for x in os.environ.get(environnement_var, '').split(',')]
+    if len(res) == 1 and len(res[0]) == 0:
+        res = []
     if reference_size is not None:
         if len(res) != reference_size:
             print("%s environnement variable and %s one don't have the same "
@@ -23,14 +25,14 @@ length = len(users)
 passwords = environnement_to_list('AUTOCLEANFTP_PASSWORDS',
         reference_size=length)
 uids = environnement_to_list('AUTOCLEANFTP_UIDS', reference_size=length)
-gids = environnement_to_list('AUTOCLEANFTP_GIDS', reference_size=length)
 lifetimes = environnement_to_list('AUTOCLEANFTP_LIFETIMES',
         reference_size=length)
+
+gid = os.environ.get('AUTOCLEANFTP_GID', '')
 
 for i, user in enumerate(users):
     password = passwords[i]
     uid = uids[i]
-    gid = gids[i]
     lifetime = int(lifetimes[i])
     print("Creating user %s (%s, %s)..." % (user, uid, gid))
     command0 = '/usr/sbin/groupadd --force --gid=%s ftpusers' % (gid,)
@@ -46,14 +48,14 @@ for i, user in enumerate(users):
     os.system(command3)
     os.system(command4)
     if lifetime > 0:
-        if lifetime < 100:
+        if lifetime < 10:
             when = "* * * * *"
-        elif lifetime < 500:
+        elif lifetime < 50:
             when = "*/5 * * * *"
         elif lifetime < 14400:
             when = "0 * * * *"
         else:
             when = "0 0 * * *"
         with open("/etc/cron.d/autoclean_vsftpd", "w") as f:
-            f.write("%s find /data/%s -type f -mmin +%i -exec rm -Rvf {} \; "
-                    "2>&1 |logger -t autoclean\n" % (when, user, lifetime))
+            f.write("%s root find /data/%s -type f -mmin +%i -exec rm -Rvf {} \; "
+                    ">/dev/null 2>&1\n" % (when, user, lifetime))
