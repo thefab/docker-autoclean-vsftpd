@@ -1,10 +1,19 @@
 # docker-autoclean-vsftpd
 
-## Badges, warnings and links
+# docker-autoclean-vsftpd
 
-[![Build Status](https://travis-ci.org/thefab/docker-autoclean-vsftpd.svg?branch=master)](https://travis-ci.org/thefab/docker-autoclean-vsftpd)
-[![](https://badge.imagelayers.io/thefab/autoclean-vsftpd:latest.svg)](https://imagelayers.io/?images=thefab/autoclean-vsftpd:latest 'badge from imagelayers.io')
+[![Travis](https://img.shields.io/travis/thefab/docker-autoclean-vsftpd.svg)](https://travis-ci.org/thefab/docker-autoclean-vsftpd)
+[![ImageLayers Size](https://img.shields.io/imagelayers/image-size/thefab/autoclean-vsftpd/latest.svg)](https://imagelayers.io/?images=thefab/autoclean-vsftpd:latest)
+[![ImageLayers Layers](https://img.shields.io/imagelayers/layers/thefab/autoclean-vsftpd/latest.svg)](https://imagelayers.io/?images=thefab/autoclean-vsftpd:latest)
+[![Docker Pulls](https://img.shields.io/docker/pulls/thefab/autoclean-vsftpd.svg)](https://hub.docker.com/r/thefab/autoclean-vsftpd/)
+[![DockerHub](https://img.shields.io/badge/docker%20hub-link-green.svg)](https://hub.docker.com/r/thefab/autoclean-vsftpd/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)]()
+[![Maturity](https://img.shields.io/badge/maturity-alpha-yellow.svg)]()
+[![Maintenance](https://img.shields.io/maintenance/no/2016.svg)]()
 
-[This image on the "Docker Hub"](https://hub.docker.com/r/thefab/autoclean-vsftpd/)
+## Features
+
+- vsftpd docker image with autocleaning feature
+- users, uids, autocleaning configurable with environnement variables
 
 **WARNING: NOT READY AT ALL : DON'T USE IT**
