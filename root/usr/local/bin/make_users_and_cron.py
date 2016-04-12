@@ -1,3 +1,6 @@
+#!/bin/env python
+# -*- coding: utf-8 -*-
+#
 from __future__ import print_function
 import os
 import sys
@@ -37,7 +40,7 @@ for i, user in enumerate(users):
     print("Creating user %s (%s, %s)..." % (user, uid, gid))
     command0 = '/usr/sbin/groupadd --force --gid=%s ftpusers' % (gid,)
     command1 = 'mkdir -p "/data/%s"' % user
-    command2 = '/usr/sbin/useradd --no-create-home --home-dir="/data/%s"' \
+    command2 = '/usr/sbin/useradd --no-create-home --home-dir="/data/%s" ' \
                '--no-user-group --non-unique --gid=%s --shell=/sbin/nologin ' \
                '--uid=%s "%s"' % (user, gid, uid, user)
     command3 = 'chown -R "%s:ftpusers" "/data/%s"' % (user, user)
