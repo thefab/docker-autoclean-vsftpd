@@ -1,4 +1,4 @@
-FROM thefab/centos-opinionated:centos6
+FROM thefab/centos-opinionated:latest
 MAINTAINER Fabien MARTY <fabien.marty@gmail.com>
 
 ENV AUTOCLEANFTP_SYSLOG=1 \
