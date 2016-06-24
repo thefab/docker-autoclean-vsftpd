@@ -4,6 +4,7 @@
 from __future__ import print_function
 import os
 import sys
+import crypt
 
 
 def environnement_to_list(environnement_var, reference_size=None,
@@ -33,11 +34,19 @@ lifetimes = environnement_to_list('AUTOCLEANFTP_LIFETIMES',
 
 gid = os.environ.get('AUTOCLEANFTP_GID', '')
 
+# users and passwords in /etc/shadow are stored in a dictionary
+# passwd['user'] = 'password'
+with open('/etc/shadow', 'r') as passfile:
+    passwd = {}
+    for line in passfile.readlines():
+        line = line.replace("\n","").split(":")
+        if  line[1] != '*' and line[1].startswith('$6'):
+            passwd[line[0]] = line[1]
+
 for i, user in enumerate(users):
     password = passwords[i]
     uid = uids[i]
     lifetime = int(lifetimes[i])
-    print("Creating user %s (%s, %s)..." % (user, uid, gid))
     command0 = '/usr/sbin/groupadd --force --gid=%s ftpusers' % (gid,)
     command1 = 'mkdir -p "/data/%s"' % user
     command2 = '/usr/sbin/useradd --no-create-home --home-dir="/data/%s" ' \
@@ -47,9 +56,18 @@ for i, user in enumerate(users):
     command4 = 'echo "%s" |passwd "%s" --stdin >/dev/null' % (password, user)
     os.system(command0)
     os.system(command1)
-    os.system(command2)
+    if not passwd.has_key(user):
+        # New users (only the new ones) are created with passwords
+        if os.system(command2) == 0:
+            print("User created %s (%s, %s)..." % (user, uid, gid))
+        os.system(command4)
+    else:
+        # Passwords for existing users are changed (only if they really changed)
+        insalt = "$6$" + passwd[user].split("$")[2] + "$"
+        if passwd[user] != crypt.crypt(password, insalt):
+            if os.system(command4) == 0:
+                print("Password changed for user %s" % user)
     os.system(command3)
-    os.system(command4)
     if lifetime > 0:
         if lifetime < 10:
             when = "* * * * *"
@@ -59,6 +77,6 @@ for i, user in enumerate(users):
             when = "0 * * * *"
         else:
             when = "0 0 * * *"
-        with open("/etc/cron.d/autoclean_vsftpd", "w") as f:
+        with open("/etc/cron.d/autoclean_vsftpd_%s" % user, "w") as f:
             f.write("%s root find /data/%s -type f -mmin +%i -exec rm -Rvf {} \; "
                     ">/dev/null 2>&1\n" % (when, user, lifetime))
