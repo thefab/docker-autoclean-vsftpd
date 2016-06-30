@@ -3,8 +3,6 @@
 # docker-autoclean-vsftpd
 
 [![Travis](https://img.shields.io/travis/thefab/docker-autoclean-vsftpd.svg)](https://travis-ci.org/thefab/docker-autoclean-vsftpd)
-[![ImageLayers Size](https://img.shields.io/imagelayers/image-size/thefab/autoclean-vsftpd/latest.svg)](https://imagelayers.io/?images=thefab/autoclean-vsftpd:latest)
-[![ImageLayers Layers](https://img.shields.io/imagelayers/layers/thefab/autoclean-vsftpd/latest.svg)](https://imagelayers.io/?images=thefab/autoclean-vsftpd:latest)
 [![Docker Pulls](https://img.shields.io/docker/pulls/thefab/autoclean-vsftpd.svg)](https://hub.docker.com/r/thefab/autoclean-vsftpd/)
 [![DockerHub](https://img.shields.io/badge/docker%20hub-link-green.svg)](https://hub.docker.com/r/thefab/autoclean-vsftpd/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)]()
