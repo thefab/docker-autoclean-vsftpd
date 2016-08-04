@@ -44,6 +44,15 @@ with open('/etc/shadow', 'r') as passfile:
         if  line[1] != '*' and line[1].startswith('$6'):
             passwd[line[0]] = line[1]
 
+# users and passwords in /etc/shadow are stored in a dictionary
+# passwd['user'] = 'password'
+with open('/etc/shadow', 'r') as passfile:
+    passwd = {}
+    for line in passfile.readlines():
+        line = line.replace("\n","").split(":")
+        if  line[1] != '*' and line[1].startswith('$6'):
+            passwd[line[0]] = line[1]
+
 for i, user in enumerate(users):
     password = passwords[i]
     uid = uids[i]
@@ -65,12 +74,12 @@ for i, user in enumerate(users):
     os.system(command0)
     os.system(command1)
     if not passwd.has_key(user):
-        # Creation des nouveaux users et mots de passe
+        # New users (only the new ones) are created with passwords
         if os.system(command2) == 0:
             print("User created %s (%s, %s)..." % (user, uid, gid))
         os.system(command4)
     else:
-        # Changement des mots de passe si necessaire pour users existants
+        # Passwords for existing users are changed (only if they really changed)
         insalt = "$6$" + passwd[user].split("$")[2] + "$"
         if passwd[user] != crypt.crypt(password, insalt):
             if os.system(command4) == 0:
